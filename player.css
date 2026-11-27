@@ -1,0 +1,144 @@
+/* ===== Profiles, Drama 2 episodes & Video player ===== */
+.hidden { display: none !important; }
+.logo { cursor: pointer; white-space: nowrap; font-size: 26px; }
+.logo span { font-size: 13px; font-weight: 700; letter-spacing: 2px; color: #fff; vertical-align: middle; margin-left: 2px; }
+.logo.big { font-size: 46px; position: absolute; top: 24px; left: 4%; }
+.logo.big span { font-size: 18px; }
+.avatar { width: 34px; height: 34px; border-radius: 6px; border: 0; font-size: 20px; display: grid; place-items: center; }
+
+/* intro */
+#intro { position: fixed; inset: 0; z-index: 300; background: #000; display: grid; place-items: center; animation: introOut .5s 2s forwards; }
+.intro-logo { font-size: clamp(70px, 16vw, 190px); font-weight: 900; color: var(--red); letter-spacing: 4px;
+  text-shadow: 0 0 40px #e5091488; animation: introZoom 2.3s ease-in forwards; }
+@keyframes introZoom { 0% { transform: scale(.6); opacity: 0; } 25% { opacity: 1; transform: scale(1); } 80% { transform: scale(1.08); } 100% { transform: scale(6); opacity: 0; } }
+@keyframes introOut { to { opacity: 0; visibility: hidden; } }
+
+/* profiles */
+#profiles { position: fixed; inset: 0; z-index: 200; background: #141414; display: flex; flex-direction: column; align-items: center; justify-content: center; }
+#profiles h1 { font-size: clamp(30px, 4vw, 52px); font-weight: 500; margin-bottom: 30px; }
+.profile-list { display: flex; gap: 26px; flex-wrap: wrap; justify-content: center; }
+.profile { background: none; border: 0; color: #888; text-align: center; font-size: 18px; }
+.profile .pic { width: clamp(90px, 10vw, 150px); aspect-ratio: 1; border-radius: 8px; display: grid; place-items: center; font-size: clamp(48px, 5vw, 76px); margin-bottom: 10px; border: 3px solid transparent; transition: .2s; }
+.profile:hover { color: #fff; }
+.profile:hover .pic { border-color: #fff; transform: scale(1.05); }
+
+/* continue watching progress on cards */
+.card .cw { position: absolute; left: 0; right: 0; bottom: 0; z-index: 3; }
+.card .cw small { display: block; font-size: 11px; padding: 0 8px 4px; text-shadow: 0 1px 4px #000; }
+.card .cw .bar { height: 4px; background: #ffffff40; }
+.card .cw .bar i { display: block; height: 100%; background: var(--red); }
+.card .play-ico { position: absolute; inset: 0; display: grid; place-items: center; font-size: 42px; opacity: 0; transition: .2s; z-index: 2; text-shadow: 0 2px 10px #000; }
+.card:hover .play-ico { opacity: 1; }
+.note { color: var(--muted); padding: 0 4% 6px; font-size: 14px; }
+.cat-title { font-size: 20px; padding: 18px 4% 0; }
+
+/* series page (Drama 2) */
+.sp-hero { position: relative; min-height: 78vh; background-size: cover; background-position: center 20%; display: flex; align-items: flex-end; padding: 0 4% 6vh; }
+.sp-hero::after { content: ""; position: absolute; inset: 0; background: linear-gradient(90deg, #000e, #0005 60%, transparent), linear-gradient(transparent 50%, var(--bg)); }
+.sp-hero > div { position: relative; z-index: 2; max-width: 620px; }
+.sp-hero h1 { font-size: clamp(34px, 5vw, 62px); margin-bottom: 12px; }
+.sp-hero p { color: #ddd; line-height: 1.6; margin-bottom: 20px; font-size: 16px; }
+.ep-head { display: flex; justify-content: space-between; align-items: center; padding: 10px 4%; gap: 12px; flex-wrap: wrap; }
+.ep-head h2 { font-size: 26px; }
+select.season { background: #242424; color: #fff; border: 1px solid #555; padding: 9px 14px; border-radius: 6px; font-size: 16px; font-weight: 600; }
+.ep-list { padding: 0 4% 40px; }
+.ep { display: flex; align-items: center; gap: 18px; padding: 16px; border-bottom: 1px solid #2a2a2a; border-radius: 6px; cursor: pointer; }
+.ep:hover { background: #2a2a2a; }
+.ep.current { background: #333; }
+.ep-num { font-size: 24px; color: #bbb; width: 34px; text-align: center; flex: none; }
+.ep-thumb { width: 170px; aspect-ratio: 16/9; border-radius: 5px; background-size: cover; background-position: center; position: relative; flex: none; display: grid; place-items: center; font-weight: 900; font-size: 22px; color: #fffa; overflow: hidden; }
+.ep-thumb .ep-play { position: absolute; inset: 0; display: grid; place-items: center; font-size: 30px; color: #fff; background: #0006; opacity: 0; transition: .2s; }
+.ep:hover .ep-play { opacity: 1; }
+.ep-prog { position: absolute; left: 0; right: 0; bottom: 0; height: 4px; background: #ffffff40; }
+.ep-prog i { display: block; height: 100%; background: var(--red); }
+.ep-txt { flex: 1; min-width: 0; }
+.ep-top { display: flex; justify-content: space-between; gap: 10px; margin-bottom: 6px; }
+.ep-top span { color: #bbb; flex: none; }
+.ep-txt p { color: #aaa; font-size: 14px; line-height: 1.45; display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden; }
+.modal .ep-head { padding: 10px 30px; }
+.modal .ep-list { padding: 0 20px 30px; }
+.modal .ep-thumb { width: 130px; }
+
+/* ===== PLAYER ===== */
+#player { position: fixed; inset: 0; z-index: 400; background: #000; color: #fff; user-select: none; }
+#player video, #player iframe { position: absolute; inset: 0; width: 100%; height: 100%; border: 0; background: #000; }
+#player iframe { display: none; }
+#player.yt-mode iframe { display: block; }
+#player.yt-mode video, #player.yt-mode .p-bottom, #player.yt-mode .flash, #player.yt-mode .spinner { display: none !important; }
+#player.yt-mode .p-top { background: none; padding: 10px; pointer-events: none; }
+#player.yt-mode .p-top * { pointer-events: auto; }
+.p-top, .p-bottom { position: absolute; left: 0; right: 0; z-index: 3; transition: opacity .35s; }
+.p-top { top: 0; padding: 22px 28px 60px; background: linear-gradient(#000b, transparent); display: flex; align-items: center; gap: 16px; }
+.p-bottom { bottom: 0; padding: 60px 28px 18px; background: linear-gradient(transparent, #000d); }
+#player.idle { cursor: none; }
+#player.idle .p-top, #player.idle .p-bottom { opacity: 0; pointer-events: none; }
+.p-btn { background: none; border: 0; color: #fff; width: 48px; height: 48px; padding: 6px; border-radius: 50%; transition: transform .15s; display: inline-flex; align-items: center; justify-content: center; flex: none; }
+.p-btn:hover { transform: scale(1.2); }
+.p-btn svg { width: 100%; height: 100%; fill: #fff; }
+.p-btn.speed { width: auto; gap: 4px; font-weight: 700; font-size: 15px; }
+.p-btn.speed svg { width: 34px; height: 34px; }
+.demo-tag { background: #ffc93c; color: #000; font-weight: 800; font-size: 12px; padding: 5px 10px; border-radius: 4px; }
+.p-bar-row { display: flex; align-items: center; gap: 14px; margin-bottom: 8px; }
+.p-time { font-size: 15px; min-width: 56px; text-align: right; }
+.p-bar { position: relative; flex: 1; height: 5px; background: #ffffff40; cursor: pointer; border-radius: 3px; touch-action: none; transition: height .1s; }
+.p-bar::before { content: ""; position: absolute; left: 0; right: 0; top: -10px; bottom: -10px; }
+.p-bar:hover { height: 8px; }
+.p-buf { position: absolute; left: 0; top: 0; bottom: 0; background: #ffffff70; border-radius: 3px; }
+.p-played { position: absolute; left: 0; top: 0; bottom: 0; background: var(--red); border-radius: 3px; }
+.p-played i { position: absolute; right: -8px; top: 50%; width: 16px; height: 16px; margin-top: -8px; border-radius: 50%; background: var(--red); transform: scale(0); transition: transform .15s; }
+.p-bar:hover .p-played i { transform: scale(1); }
+.p-hover { position: absolute; bottom: 18px; transform: translateX(-50%); background: #000d; padding: 3px 8px; border-radius: 4px; font-size: 13px; display: none; pointer-events: none; }
+.p-bar:hover .p-hover { display: block; }
+.p-ctrls { display: flex; align-items: center; gap: 10px; }
+.pl-title { flex: 1; text-align: center; font-size: 18px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; padding: 0 10px; }
+.pl-title span { color: #ccc; font-weight: 400; margin-left: 8px; }
+.vol { display: flex; align-items: center; }
+.vol input { width: 0; opacity: 0; transition: .25s; accent-color: var(--red); }
+.vol:hover input { width: 100px; opacity: 1; }
+.flash { position: absolute; top: 50%; left: 50%; width: 90px; height: 90px; margin: -45px; border-radius: 50%; background: #0008; z-index: 2; display: grid; place-items: center; opacity: 0; pointer-events: none; }
+.flash svg { width: 50px; fill: #fff; }
+.flash.go { animation: flash .6s; }
+@keyframes flash { 0% { opacity: 1; transform: scale(.8); } 100% { opacity: 0; transform: scale(1.4); } }
+.spinner { position: absolute; top: 50%; left: 50%; width: 70px; height: 70px; margin: -35px; border: 5px solid #ffffff30; border-top-color: var(--red); border-radius: 50%; animation: spin .8s linear infinite; z-index: 2; pointer-events: none; }
+@keyframes spin { to { transform: rotate(360deg); } }
+.yt-bar { display: none; flex: 1; align-items: center; gap: 10px; }
+#player.yt-mode .yt-bar { display: flex; }
+#player.yt-mode .p-top { background: #000; padding: 6px 14px; height: 56px; }
+#player.yt-mode iframe { top: 56px; height: calc(100% - 56px); }
+#player.yt-mode .ep-panel { top: 64px; bottom: auto; }
+#pYtTitle { flex: 1; font-size: 17px; font-weight: 700; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.yt-bar .btn { padding: 8px 16px; font-size: 14px; margin: 0; }
+.p-err { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); z-index: 4; text-align: center; background: #000c; padding: 28px 34px; border-radius: 10px; max-width: 90vw; }
+.p-err h3 { font-size: 22px; margin-bottom: 10px; }
+.p-err p { color: #ccc; margin-bottom: 18px; }
+.ep-panel { position: absolute; right: 28px; bottom: 120px; width: min(520px, 92vw); max-height: 62vh; overflow-y: auto; background: #181818f2; border-radius: 8px; z-index: 5; padding-bottom: 10px; }
+.ep-panel .ep-head { position: sticky; top: 0; background: #181818; padding: 14px 16px; z-index: 2; }
+.ep-panel .ep-head h2 { font-size: 20px; }
+.ep-panel .ep-list { padding: 0 8px; }
+.ep-panel .ep-thumb { width: 110px; }
+.ep-panel .ep-txt p { -webkit-line-clamp: 2; font-size: 13px; }
+.next-overlay { position: absolute; right: 40px; bottom: 130px; z-index: 6; background: #000c; padding: 20px 24px; border-radius: 8px; border-left: 4px solid var(--red); }
+.nx-label { color: #bbb; font-size: 13px; text-transform: uppercase; letter-spacing: 1px; }
+.nx-title { font-size: 20px; font-weight: 700; margin: 6px 0 14px; }
+
+@media (max-width: 760px) {
+  .logo span { display: none; }
+  .ep-thumb { width: 110px; }
+  .ep-num { display: none; }
+  .p-top, .p-bottom { padding-left: 12px; padding-right: 12px; }
+  .p-btn { width: 40px; height: 40px; }
+  .pl-title { font-size: 14px; }
+  .vol input { display: none; }
+  .logo.big { font-size: 32px; }
+}
+
+/* real drama posters (YouTube thumbnails) */
+.poster.yt::before { content: ""; position: absolute; inset: 0; background: linear-gradient(180deg, transparent 35%, #000e 85%); }
+.poster.yt .p-title { font-size: 19px; }
+
+footer .logo { display: inline-block; font-size: 22px; margin-bottom: 10px; }
+footer p { max-width: 720px; margin: 6px auto; line-height: 1.6; }
+
+/* YouTube thumbnails: crop the 4:3 letterbox bars */
+.poster.yt { background-size: auto 134%; background-position: center; }
+.badge { max-width: 52%; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }

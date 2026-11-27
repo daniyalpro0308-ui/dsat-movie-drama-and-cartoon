@@ -1,0 +1,139 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>DSAT Movie and Drama — Free Dramas, Movies, Anime & Cartoons</title>
+  <meta name="description" content="DSAT Movie and Drama: 33 Pakistani dramas, 92 telefilms, 17 anime and 15 cartoons — free full episodes from official channels, in a Netflix-style player.">
+  <meta name="theme-color" content="#0b0b0f">
+  <meta property="og:title" content="DSAT Movie and Drama">
+  <meta property="og:description" content="Free full Pakistani dramas, telefilms, anime and cartoons — Netflix-style.">
+  <meta property="og:type" content="website">
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%230b0b0f'/%3E%3Ctext x='32' y='45' font-family='Arial Black,Arial' font-weight='900' font-size='38' text-anchor='middle' fill='%23e50914'%3ED%3C/text%3E%3C/svg%3E">
+  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="player.css">
+</head>
+<body>
+  <!-- Intro -->
+  <div id="intro"><div class="intro-logo">DSAT</div></div>
+
+  <!-- Profiles -->
+  <div id="profiles" class="hidden">
+    <div class="logo big">DSAT <span>MOVIE AND DRAMA</span></div>
+    <h1>Who's watching?</h1>
+    <div id="profileList" class="profile-list"></div>
+  </div>
+
+  <header id="nav">
+    <div class="logo" data-home>DSAT <span>MOVIE AND DRAMA</span></div>
+    <nav class="tabs">
+      <button data-tab="home" class="active">Home</button>
+      <button data-tab="drama1">Drama 1</button>
+      <button data-tab="drama2">Drama 2</button>
+      <button data-tab="movie">Movies</button>
+      <button data-tab="anime">Anime</button>
+      <button data-tab="cartoon">Cartoons</button>
+      <button data-tab="list">My List</button>
+    </nav>
+    <div class="nav-right">
+      <input id="search" type="search" placeholder="Search titles, genres…">
+      <button id="settingsBtn" class="icon-btn hidden" title="Real posters (TMDB key)">⚙</button>
+      <button id="avatarBtn" class="avatar" title="Switch profile"></button>
+    </div>
+  </header>
+
+  <section id="hero"></section>
+  <main id="rows"></main>
+
+  <!-- Details modal -->
+  <div id="modal" class="overlay hidden">
+    <div class="modal">
+      <button class="close" data-close>✕</button>
+      <div id="modalBody"></div>
+    </div>
+  </div>
+
+  <!-- Settings modal -->
+  <div id="settings" class="overlay hidden">
+    <div class="modal small">
+      <button class="close" data-close>✕</button>
+      <h2>Real Posters</h2>
+      <p>Free TMDB API key daalo (themoviedb.org → Settings → API) to har movie, drama aur anime ka asli poster, banner aur episode names aa jayenge.</p>
+      <input id="tmdbKey" type="text" placeholder="TMDB API key (v3)">
+      <div class="row-btns">
+        <button id="saveKey" class="btn primary">Save</button>
+        <button id="clearKey" class="btn">Remove</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Video player -->
+  <div id="player" class="hidden">
+    <video id="vid" playsinline preload="auto"></video>
+    <iframe id="yt" allow="autoplay; fullscreen; encrypted-media; picture-in-picture" allowfullscreen referrerpolicy="strict-origin-when-cross-origin"></iframe>
+    <div class="spinner hidden" id="pSpin"></div>
+    <div class="flash" id="pFlash"></div>
+    <div class="p-err hidden" id="pErr">
+      <h3>Video load nahi ho saki 😕</h3>
+      <p>Is video ki link kaam nahi kar rahi. Internet check karo ya videos.js mein link badlo.</p>
+      <button class="btn primary" id="pRetry">↻ Dobara Try Karo</button>
+    </div>
+
+    <div class="p-top">
+      <button class="p-btn" id="pBack" title="Back"><svg viewBox="0 0 24 24"><path d="M20 11H7.8l5.6-5.6L12 4l-8 8 8 8 1.4-1.4L7.8 13H20z"/></svg></button>
+      <div class="yt-bar">
+        <span id="pYtTitle"></span>
+        <button class="btn" id="pYtEps">☰ Episodes</button>
+        <button class="btn red" id="pYtNext">Next Episode ▶</button>
+      </div>
+    </div>
+
+    <div class="p-bottom">
+      <div class="p-bar-row">
+        <div class="p-bar" id="pBar">
+          <div class="p-buf" id="pBuf"></div><div class="p-played" id="pPlayed"><i></i></div>
+          <span class="p-hover" id="pHover">0:00</span>
+        </div>
+        <span class="p-time" id="pTime">0:00</span>
+      </div>
+      <div class="p-ctrls">
+        <button class="p-btn" id="pPlay" title="Play (Space)"></button>
+        <button class="p-btn" id="pRew" title="Back 10s (←)"><svg viewBox="0 0 24 24"><path d="M12 5V1L7 6l5 5V7a6 6 0 1 1-6 6H4a8 8 0 1 0 8-8z"/><text x="12" y="16.5" font-size="6.5" text-anchor="middle" font-weight="700">10</text></svg></button>
+        <button class="p-btn" id="pFwd" title="Forward 10s (→)"><svg viewBox="0 0 24 24"><path d="M12 5V1l5 5-5 5V7a6 6 0 1 0 6 6h2a8 8 0 1 1-8-8z"/><text x="12" y="16.5" font-size="6.5" text-anchor="middle" font-weight="700">10</text></svg></button>
+        <div class="vol">
+          <button class="p-btn" id="pMute" title="Mute (M)"></button>
+          <input type="range" id="pVol" min="0" max="1" step="0.05">
+        </div>
+        <div class="pl-title" id="pTitle"></div>
+        <button class="p-btn" id="pNext" title="Next Episode"><svg viewBox="0 0 24 24"><path d="M5 18l9-6-9-6v12zM16 6v12h2.5V6H16z"/></svg></button>
+        <button class="p-btn" id="pEps" title="Episodes"><svg viewBox="0 0 24 24"><path d="M3 5h14v2H3zm0 4h14v2H3zm0 4h9v2H3zm16-4v10H7v2h14V9z"/></svg></button>
+        <button class="p-btn speed" id="pSpeed" title="Speed"><svg viewBox="0 0 24 24"><path d="M12 4a9 9 0 0 0-7.8 13.5l1.7-1A7 7 0 1 1 19 12h2a9 9 0 0 0-9-8zm4.6 3-5.4 4.6a1.6 1.6 0 1 0 2.2 2.2z"/></svg><span id="pSpeedTxt">1x</span></button>
+        <button class="p-btn" id="pFs" title="Full screen (F)"><svg viewBox="0 0 24 24"><path d="M4 4h6v2H6v4H4zm10 0h6v6h-2V6h-4zM4 14h2v4h4v2H4zm14 0h2v6h-6v-2h4z"/></svg></button>
+      </div>
+    </div>
+
+    <div class="ep-panel hidden" id="pEpPanel"></div>
+
+    <div class="next-overlay hidden" id="pNextBox">
+      <div class="nx-label">Next Episode</div>
+      <div class="nx-title" id="pNextTitle"></div>
+      <div class="nx-btns">
+        <button class="btn primary" id="pNextNow">▶ Play in <span id="pNextCount">8</span></button>
+        <button class="btn" id="pNextCancel">Cancel</button>
+      </div>
+    </div>
+  </div>
+
+  <footer>
+    <div class="logo" style="justify-content:center">DSAT <span>MOVIE AND DRAMA</span></div>
+    <p>Saari videos un ke asli maalikon ke official YouTube channels se chalti hain: HAR PAL GEO, HUM TV, ARY Digital, Muse Asia aur Blender Studio. DSAT koi video khud host nahi karta.</p>
+    <p>© 2026 DSAT Movie and Drama • Free Forever • Made with ❤ in Pakistan</p>
+  </footer>
+
+  <script src="dramas.js"></script>
+  <script src="content.js"></script>
+  <script src="data.js"></script>
+  <script src="videos.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>
